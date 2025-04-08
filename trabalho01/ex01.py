@@ -25,5 +25,6 @@ for num_binario in numeros_binarios:
 
     numeros_decimais.append(num_inteiro + "." + num_fracionaria)
 
+# Imprimindo os números convertidos:
 for i in range(len(numeros_decimais)):
     print(f"{numeros_binarios[i]} = {numeros_decimais[i]}")
