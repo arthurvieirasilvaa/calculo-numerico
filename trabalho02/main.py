@@ -77,7 +77,7 @@ def newton_raphson(f, derivada, x0):
         try:
             delta_x = -fx/f_linha 
         except ZeroDivisionError:
-            print(f"O valor da derivada da função no ponto {x} é 0!\n")
+            print(f"O valor da derivada da função no ponto é 0!\n")
             break
 
         # Imprindo a iteração atual:
@@ -93,9 +93,38 @@ def newton_raphson(f, derivada, x0):
 
 
 # Método da Secante:
-def secante():
-    pass
+def secante(f, x0, x1):
+    print("\n=========== Método da Secante ===========")
 
+    i = 1
+    # Enquanto o número máximo de iterações não for atingido:
+    while i <= MAX_ITERACOES:
+        fx0 = f(x0) # fx_n-1
+        fx1 = f(x1) # fxn
+
+        # Se o denominador fxn - fx_n-1 em um ponto for 0, o algoritmo se encerra:
+        try:
+            delta_x = -(fx1 * ((x1 - x0) / (fx1 - fx0)))
+        except ZeroDivisionError:
+            print(f"O valor de fxn - fx_n-1 no ponto é 0!\n")
+            break
+
+        x = x1 + delta_x # obtém o valor do x_n+
+        fx = f(x)
+
+        # Imprindo a iteração atual:
+        print(f"\nIteração {i}:")
+        print(f"\tx_n-1 = {x0}\n\txn = {x1}\n\tx_n+1 = {x}\n\tf(x) = {fx}\n\tValor absoluto do delta_x = {delta_x}")
+
+        # Verifica as condições de parada:
+        if abs(delta_x) < E1 or abs(fx) < E2:
+            break
+
+        # Atualizando os próximos valores:
+        x0 = x1
+        x1 = x
+
+        i += 1 # atualiza para a próxima iteração
 
 # Constantes utilizadas:
 MAX_ITERACOES = 50
