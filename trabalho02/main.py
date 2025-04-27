@@ -45,7 +45,7 @@ def bissecao(f, a, b):
             print(f"\tIntervalo [{a}, {b}]\n\tx = {x}\n\tf(x) = {fx}")
 
             # Verifica as condições de parada:
-            if ((b-a)/2) < E1 or abs(fx) < E2:
+            if abs(((b-a)/2)) < E1 or abs(fx) < E2:
                 break
             
             # A raiz está no novo intervalo [a, x]:
@@ -82,7 +82,7 @@ def newton_raphson(f, derivada, x0):
 
         # Imprindo a iteração atual:
         print(f"\nIteração {i}:")
-        print(f"\tx = {x}\n\tf(x) = {fx}\n\tValor absoluto do delta_x = {delta_x}")
+        print(f"\tx = {x}\n\tf(x) = {fx}\n\tValor absoluto do delta_x = {abs(delta_x)}")
 
         # Verifica as condições de parada:
         if abs(delta_x) < E1 or abs(fx) < E2:
@@ -114,7 +114,7 @@ def secante(f, x0, x1):
 
         # Imprindo a iteração atual:
         print(f"\nIteração {i}:")
-        print(f"\tx_n-1 = {x0}\n\txn = {x1}\n\tx_n+1 = {x}\n\tf(x) = {fx}\n\tValor absoluto do delta_x = {delta_x}")
+        print(f"\tx_n-1 = {x0}\n\txn = {x1}\n\tx_n+1 = {x}\n\tf(x) = {fx}\n\tValor absoluto do delta_x = {abs(delta_x)}")
 
         # Verifica as condições de parada:
         if abs(delta_x) < E1 or abs(fx) < E2:
@@ -130,3 +130,17 @@ def secante(f, x0, x1):
 MAX_ITERACOES = 50
 E1 = 1e-5
 E2 = 1e-7
+
+# Obtendo os resultados finais:
+
+# Método da Bisseção:
+bissecao(func1, 1, 2)
+bissecao(func2, -2, -1)
+
+# Método de Newton-Rapshon:
+newton_raphson(func1, derivada1, 1)
+newton_raphson(func2, derivada2, -2)
+
+# Método da Secante:
+secante(func1, 1, 1.5)
+secante(func2, -2, -1.5)
