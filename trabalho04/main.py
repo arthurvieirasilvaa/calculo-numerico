@@ -38,14 +38,16 @@ def jacobi(A, b, n, TOL, MAX_ITERACOES, c):
             x_novo = soma / A[i, i]
             x[i] = (1 - c) * x0[i] + c * x_novo
 
-        # Critério de parada:
         erro = linalg.norm(x-x0, np.inf) / linalg.norm(x, np.inf)
-        if erro <= TOL:
-            return x
-        
+
+        # Imprimindo os resultados:
         print(f"\nIteração {contador}:")
         print(f"\tx = {x}")
         print(f"\tErro: {erro}")
+
+        # Critério de parada:
+        if erro <= TOL:
+            return x
         
         x0 = np.copy(x)
         contador += 1
@@ -60,6 +62,8 @@ def gauss_seidel(A, b, n, TOL, MAX_ITERACOES, c):
     x0 = np.zeros(n)
     x = np.zeros(n)
 
+    print(f"Coeficiente de relaxação: {c}")
+    print(f"x inicial: {x}")
 
     contador = 1
     while contador <= MAX_ITERACOES:
@@ -71,14 +75,16 @@ def gauss_seidel(A, b, n, TOL, MAX_ITERACOES, c):
             x_novo = soma / A[i, i]
             x[i] = (1 - c) * x[i] + c * x_novo
 
-        # Critério de parada:
         erro = linalg.norm(x-x0, np.inf) / linalg.norm(x, np.inf)
-        if erro <= TOL:
-            return x
         
+        # Imprimindo os resultados:
         print(f"\nIteração {contador}:")
         print(f"\tx = {x}")
         print(f"\tErro: {erro}")
+        
+        # Critério de parada:
+        if erro <= TOL:
+            return x
         
         x0 = np.copy(x)
         contador += 1
@@ -91,8 +97,8 @@ A = criar_matriz()
 b = criar_vetor()
 n = A.shape[0] # obtendo as dimensões da matriz A
 
-TOL = pow(10, -4) # definindo o critério para a tolerância
-MAX_ITERACOES = 50 # definindo o número máximo de iterações
+TOL = pow(10, -1) # definindo o critério para a tolerância
+MAX_ITERACOES = 20 # definindo o número máximo de iterações
 
 # Método de Jacobi:
 
