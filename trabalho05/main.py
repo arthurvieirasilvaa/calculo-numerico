@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import linalg
+import matplotlib.pyplot as plt
 
 # Função utilizada para calcular a Tabela de Diferenças Divididas:
 def diferencas_divididas(x, y):
@@ -52,6 +53,42 @@ def obter_coeficientes(x, y):
     return linalg.solve(vandermonde, y)
 
 
+# Função utilizada para plotar o gráfico com a função polinomial encontrada:
+def plotar_grafico(x, y, a, alternativa):
+    x_plot = np.linspace(min(x), max(x), 100)    
+    
+    y_plot = 0
+    for i in range(len(a)):
+        y_plot += a[i] * x_plot**i
+
+    
+    # Plota o polinômio e os pontos dados
+    plt.figure(f'Figura {alternativa}')
+    plt.plot(x_plot, y_plot, label="Polinômio Interpolador na forma canônica", color="blue", linewidth=3.0)
+    plt.scatter(x, y, color="green", label="Valores de x fornecidos", linewidth=3.0)
+    
+    plt.xlabel("x")
+    plt.ylabel("P(x)")
+    plt.grid(True)
+    
+    plt.savefig(f"grafico_{alternativa}")
+    plt.show()
+
+
+# Função utilizada para imprimir o polinômio interpolador na forma canônica de maneira formatada:
+def imprimir_polinomio(a):
+    p = f"P(x) = {a[0]:.3f} "
+
+    for i in range(1, len(a)):
+        if a[i] > 0:
+            p += f"+ {a[i]:.3f}x^{i} "
+
+        else:
+            p += f"- {abs(a[i]):.3f}x^{i} "
+
+    print(p)
+
+
 X_ESTIMADO = 5.2 # valor de x que deseja-se estimar
 
 # Valores de x e y para a alternativa a)
@@ -78,12 +115,18 @@ print(f"\tP({X_ESTIMADO}) = {p}")
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xa, ya)
+print("\tTabela de Diferenças Dividias:")
+print(np.round(T, 5))
+
 p = interpolacao_newton(xa, X_ESTIMADO, T)
 print(f"\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xa, ya)
 print(f"\tCoeficientes a = [{a}]")
+imprimir_polinomio(a)
+
+plotar_grafico(xa, ya, a, 'a')
 
 # b)
 print("\nB)")
@@ -96,12 +139,18 @@ print(f"\tP({X_ESTIMADO}) = {p}")
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xb, yb)
+print("\tTabela de Diferenças Dividias:")
+print(np.round(T, 5))
+
 p = interpolacao_newton(xb, X_ESTIMADO, T)
 print(f"\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xb, yb)
 print(f"\tCoeficientes a = [{a}]")
+imprimir_polinomio(a)
+
+plotar_grafico(xb, yb, a, 'b')
 
 # c)
 print("\nC)")
@@ -114,9 +163,15 @@ print(f"\tP({X_ESTIMADO}) = {p}")
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xc, yc)
+print("\tTabela de Diferenças Dividias:")
+print(np.round(T, 5))
+
 p = interpolacao_newton(xc, X_ESTIMADO, T)
 print(f"\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xc, yc)
 print(f"\tCoeficientes a = [{a}]")
+imprimir_polinomio(a)
+
+plotar_grafico(xc, yc, a, 'c')
