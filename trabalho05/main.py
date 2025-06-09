@@ -23,8 +23,8 @@ def interpolacao_newton(x, X_ESTIMADO, T):
     for i in range(n):
         resp = 1
         for j in range(i):
-            resp *= (X_ESTIMADO - x[j]) # calcula o produto presente na fórumala de Newton
-        p += T[0][i] * resp # atualiza a aproximação de f(x)
+            resp *= (X_ESTIMADO - x[j])
+        p += T[0][i] * resp
 
     return p
 
@@ -40,17 +40,54 @@ def interpolacao_lagrange(x, y, X_ESTIMADO):
             if i != j:
                 l *= (X_ESTIMADO-x[j]) / (x[i]-x[j])
         
+        print(f"\tL_{i}(x) = {l}")
         p += y[i] * l
 
     return p
 
+# Função utilizada para realizar a Eliminação de Gauss sem pivoteamento:
+def eliminacao_gaussiana(A, B):
+    n = A.shape[0] # obtendo o número de elementos da matriz A
+
+    # Eliminação:
+    for k in range(n-1): # percorre as colunas
+        for i in range(k+1, n): # percorre as linhas que estão abaixo de k
+            m = A[i][k]/A[k][k] # obtém o multiplicador da linha
+            A[i][k] = 0
+            
+            # Atualizando a linha:
+            for j in range(k+1, n):
+                A[i][j] -= m * A[k][j]
+            
+            B[i] -= m * B[k] # atualizando o vetor B
+
+    # Solucionando o sistema triangular superior:
+    x = np.zeros(n)
+    for i in range(n-1, -1, -1):
+        soma = 0
+        for j in range(i+1, n):
+            soma += A[i][j] * x[j]
+
+        x[i] = (B[i] - soma) / A[i][i]
+
+    return x
+
 
 # Função utilizada para obter os coeficientes a do polinômio interpolador na forma canônica:
 def obter_coeficientes(x, y):
-    vandermonde = np.vander(x, increasing=True) # gerando a matriz de Vandermonde
-    
+    n = len(x)
+    vandermonde = np.zeros((n, n))
+
+    # Gerando a matriz de Vandermonde:
+    for i in range(n):
+        for j in range(n):
+            if j == 0:
+                vandermonde[i][j] = 1
+            else:
+                vandermonde[i][j] = x[i] ** j
+
     # Retorna o vetor de coeficintes a, solucionando o sisteman Vandermonde x a = y 
-    return linalg.solve(vandermonde, y)
+    return eliminacao_gaussiana(vandermonde, y)
 
 
 # Função utilizada para plotar o gráfico com a função polinomial encontrada:
@@ -70,9 +107,21 @@ def plotar_grafico(x, y, a, alternativa):
     plt.xlabel("x")
     plt.ylabel("P(x)")
     plt.grid(True)
+    plt.legend()
     
     plt.savefig(f"grafico_{alternativa}")
     plt.show()
+
+
+# Função utilizada para imprimir a tabela de diferenças divididas de maneira formatada:
+def imprimir_tabela(T):
+    n = T.shape[0]
+
+    print("\tTabela de Diferenças Divididas:")
+    for i in range(n):
+        for j in range(n-i):
+            print(f"\t{T[i][j]:>8.4f}", end=" ")
+        print()
 
 
 # Função utilizada para imprimir o polinômio interpolador na forma canônica de maneira formatada:
@@ -86,7 +135,7 @@ def imprimir_polinomio(a):
         else:
             p += f"- {abs(a[i]):.3f}x^{i} "
 
-    print(p)
+    print(f"\n\t{p}")
 
 
 X_ESTIMADO = 5.2 # valor de x que deseja-se estimar
@@ -110,20 +159,19 @@ print("\nA)")
 # Interpolação de Lagrange:
 print("\nInterpolação de Lagrange:")
 p = interpolacao_lagrange(xa, ya, X_ESTIMADO)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xa, ya)
-print("\tTabela de Diferenças Dividias:")
-print(np.round(T, 5))
+imprimir_tabela(T)
 
 p = interpolacao_newton(xa, X_ESTIMADO, T)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xa, ya)
-print(f"\tCoeficientes a = [{a}]")
+print(f"\nCoeficientes a = [{a}]")
 imprimir_polinomio(a)
 
 plotar_grafico(xa, ya, a, 'a')
@@ -134,20 +182,19 @@ print("\nB)")
 # Interpolação de Lagrange:
 print("\nInterpolação de Lagrange:")
 p = interpolacao_lagrange(xb, yb, X_ESTIMADO)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xb, yb)
-print("\tTabela de Diferenças Dividias:")
-print(np.round(T, 5))
+imprimir_tabela(T)
 
 p = interpolacao_newton(xb, X_ESTIMADO, T)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xb, yb)
-print(f"\tCoeficientes a = [{a}]")
+print(f"\nCoeficientes a = [{a}]")
 imprimir_polinomio(a)
 
 plotar_grafico(xb, yb, a, 'b')
@@ -158,20 +205,19 @@ print("\nC)")
 # Interpolação de Lagrange:
 print("\nInterpolação de Lagrange:")
 p = interpolacao_lagrange(xc, yc, X_ESTIMADO)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Interpolação de Newton:
 print("\nInterpolação de Newton:")
 T = diferencas_divididas(xc, yc)
-print("\tTabela de Diferenças Dividias:")
-print(np.round(T, 5))
+imprimir_tabela(T)
 
 p = interpolacao_newton(xc, X_ESTIMADO, T)
-print(f"\tP({X_ESTIMADO}) = {p}")
+print(f"\n\tP({X_ESTIMADO}) = {p}")
 
 # Coeficientes a do polinômio interpolador na forma canônica:
 a = obter_coeficientes(xc, yc)
-print(f"\tCoeficientes a = [{a}]")
+print(f"\nCoeficientes a = [{a}]")
 imprimir_polinomio(a)
 
 plotar_grafico(xc, yc, a, 'c')
