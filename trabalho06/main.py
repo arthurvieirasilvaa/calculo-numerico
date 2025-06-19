@@ -30,13 +30,12 @@ def integral_analitica2(a, b):
 def metodo_trapezio(f, a, b, m):
     if m < 2:
         print("Informe pelo menos 2 pontos!\n")
-        return
+        return None
 
     n = m-1
     print(f"{n} subintervalos")
-    h = (b-a) / n
 
-    print("\nMétodo do trapźeio:")
+    h = (b-a) / n
     x = np.linspace(a, b, m)
     print(f"Pontos utilizados x = {x}")
 
@@ -45,6 +44,7 @@ def metodo_trapezio(f, a, b, m):
         res += 2 * f(x[i])
 
     res += f(x[n])
+
     return (h/2) * res
 
 
@@ -52,17 +52,16 @@ def metodo_trapezio(f, a, b, m):
 def metodo_simpson(f, a, b, m):
     if m < 3:
         print("Informe pelo menos 3 pontos!\n")
-        return
+        return None
     
     n = m-1
     print(f"{n} subintervalos")
 
     if n % 2 != 0:
         print("O número de subintervalos deve ser par!\n")
+        return None
 
     h = (b-a) / n
-
-    print("\nMétodo de Simpson (1/3):")
     x = np.linspace(a, b, m)
     print(f"Pontos utilizados x = {x}")
 
@@ -74,7 +73,33 @@ def metodo_simpson(f, a, b, m):
         res += 2 * f(x[i]) # índices pares com exceção de f[x0] e f[xn]
     
     res += f(x[n])
+
     return (h/3) * res
+
+
+def imprime_saida(f, integral_analitica, a, b, m, metodo):
+    if metodo == 'trapezio':
+        print("\n============ método do trapézio ============\n")
+        analitico = integral_analitica(a, b)
+        print(f"\tIntegral analítica: {analitico}")
+
+        res_trapezio = metodo_trapezio(f, a, b, m)
+        print(f"\tResultado da integral com o método do trapézio: {res_trapezio}")
+        erro_trapezio = abs(analitico - res_trapezio)
+        print(f"\tErro de truncamento para o método do trapézio: {erro_trapezio}")
+
+    elif metodo == 'simpson':
+        print("\n============ 1° método de Simpson ============\n")
+        analitico = integral_analitica(a, b)
+        print(f"\tIntegral analítica: {analitico}")
+
+        res_simpson = metodo_simpson(f, a, b, m)
+        print(f"\tResultado da integral com o 1° método de Simpson: {res_simpson}")
+        erro_simpson = abs(analitico - res_trapezio)
+        print(f"\tErro de truncamento para o 1° método de Simpson: {erro_simpson}")
+
+    else:
+        print("\nMétodo Incorreto!\n")
 
 
 # Inicializando as variáveis:
@@ -94,43 +119,18 @@ m1 = 2
 m2 = 5
 m3 = 13
 
-analitico = integral_analitica1(a, b)
-print(f"Integral analítica: {analitico}")
-
-res_trapezio = metodo_trapezio(f1, a, b, m1)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f1, a, b, m2)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f1, a, b, m3)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
+imprime_saida(f1, integral_analitica1, a, b, m1, 'trapezio')
+imprime_saida(f1, integral_analitica1, a, b, m2, 'trapezio')
+imprime_saida(f1, integral_analitica1, a, b, m3, 'trapezio')
 
 # 1° Método de Simpson:
 
 # Número de pontos:
 m1 = 3
 
-res_simpson = metodo_simpson(f1, a, b, m1)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f1, a, b, m2)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f1, a, b, m2)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
+imprime_saida(f1, integral_analitica1, a, b, m1, 'simpson')
+imprime_saida(f1, integral_analitica1, a, b, m2, 'simpson')
+imprime_saida(f1, integral_analitica1, a, b, m3, 'simpson')
 
 
 # 2)
@@ -150,57 +150,16 @@ m3 = 99
 m4 = 599
 m5 = 10001
 
-analitico = integral_analitica1(a, b)
-print(f"Integral analítica: {analitico}")
-
-res_trapezio = metodo_trapezio(f2, a, b, m1)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f2, a, b, m2)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f2, a, b, m3)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f2, a, b, m4)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
-
-res_trapezio = metodo_trapezio(f2, a, b, m5)
-print(f"Resultado da integral com o método do trapézio: {res_trapezio}")
-erro_trapezio = abs(analitico - res_trapezio)
-print(f"Erro de truncamento para o método do trapézio: {erro_trapezio}")
+imprime_saida(f2, integral_analitica2, a, b, m1, 'trapezio')
+imprime_saida(f2, integral_analitica2, a, b, m2, 'trapezio')
+imprime_saida(f2, integral_analitica2, a, b, m3, 'trapezio')
+imprime_saida(f2, integral_analitica2, a, b, m4, 'trapezio')
+imprime_saida(f2, integral_analitica2, a, b, m5, 'trapezio')
 
 # 1° Método de Simpson:
 
-res_simpson = metodo_simpson(f2, a, b, m1)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f2, a, b, m2)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f2, a, b, m3)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f2, a, b, m4)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
-
-res_simpson = metodo_simpson(f2, a, b, m5)
-print(f"Resultado da integral com o 1° método de Simpson: {res_simpson}")
-erro_simpson = abs(analitico - res_simpson)
-print(f"Erro de truncamento para o 1° método de Simpson: {erro_simpson}")
+imprime_saida(f2, integral_analitica2, a, b, m1, 'simpson')
+imprime_saida(f2, integral_analitica2, a, b, m2, 'simpson')
+imprime_saida(f2, integral_analitica2, a, b, m3, 'simpson')
+imprime_saida(f2, integral_analitica2, a, b, m4, 'simpson')
+imprime_saida(f2, integral_analitica2, a, b, m5, 'simpson')
