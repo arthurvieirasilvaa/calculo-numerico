@@ -1,4 +1,3 @@
-import math
 import numpy as np
 from numpy.polynomial.legendre import leggauss
 
@@ -9,7 +8,7 @@ def f1(x):
 
 # Função utilizada para retornar a função f(x) utilizada no segundo exercício:
 def f2(x):
-    return math.sqrt(x)
+    return np.sqrt(x)
 
 
 # Função utilizada para calcular a integral analítica da função f(x) utilizada no primeiro exercício: 
@@ -38,7 +37,6 @@ def metodo_trapezio(f, a, b, m):
 
     h = (b-a) / n
     x = np.linspace(a, b, m)
-    print(f"Pontos utilizados x = {x}")
 
     res = f(x[0])
     for i in range(1, n):
@@ -64,7 +62,6 @@ def metodo_simpson(f, a, b, m):
 
     h = (b-a) / n
     x = np.linspace(a, b, m)
-    print(f"Pontos utilizados x = {x}")
 
     res = f(x[0])
     for i in range(1, n, 2):
@@ -117,6 +114,8 @@ def imprime_saida(f, funcao_metodo, integral_analitica, a, b, lista_pontos, nome
 
 # 1)
 
+print("\nExercício 1)\n")
+
 # Número de pontos para os métodos do exercício 1:
 pontos_trapezio = [2, 5, 13]
 pontos_simpson = [3, 5, 13]
@@ -134,6 +133,8 @@ imprime_saida(f1, quadratura_gaussiana, integral_analitica1, a, b, pontos_gaussi
 
 # 2)
 
+print("\nExercício 2)\n")
+
 # Número de pontos para os métodos do exercício 2:
 pontos_trapezio_simpson = [2, 5, 99, 599, 10001]
 pontos_gaussiana = [5, 10, 15, 20, 50, 100]
@@ -142,7 +143,7 @@ pontos_gaussiana = [5, 10, 15, 20, 50, 100]
 a = 0
 b = 20
 
-print(f"\nIntervalo [a, b] = [{a}, {b}]")
+print(f"Intervalo [a, b] = [{a}, {b}]")
 
 imprime_saida(f2, metodo_trapezio, integral_analitica2, a, b, pontos_trapezio_simpson, "método do trapézio")
 imprime_saida(f2, metodo_simpson, integral_analitica2, a, b, pontos_trapezio_simpson, "método de Simpson (1/3)")
