@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from numpy.polynomial.legendre import leggauss
 
 # Função utilizada para retornar a função f(x) utilizada no primeiro exercício:
 def f1(x):
@@ -77,89 +78,72 @@ def metodo_simpson(f, a, b, m):
     return (h/3) * res
 
 
-def imprime_saida(f, integral_analitica, a, b, m, metodo):
-    if metodo == 'trapezio':
-        print("\n============ método do trapézio ============\n")
-        analitico = integral_analitica(a, b)
-        print(f"\tIntegral analítica: {analitico}")
+# Função utilizada para aproximar a integral da função f(x) com o método da Quadratura Gaussiana:
+def quadratura_gaussiana(f, a, b, n):
+    if n <= 0:
+        print("O número de pontos precisa ser pelo menos 1.")
+        return None
 
-        res_trapezio = metodo_trapezio(f, a, b, m)
-        print(f"\tResultado da integral com o método do trapézio: {res_trapezio}")
-        erro_trapezio = abs(analitico - res_trapezio)
-        print(f"\tErro de truncamento para o método do trapézio: {erro_trapezio}")
+    # Obtendo os vetores dos nós (x) e dos pesos (w):
+    nos, pesos = leggauss(n)
 
-    elif metodo == 'simpson':
-        print("\n============ 1° método de Simpson ============\n")
-        analitico = integral_analitica(a, b)
-        print(f"\tIntegral analítica: {analitico}")
+    # Transformando do intervalo [a, b] para [-1, 1]:
+    x_novo = ((b-a) / 2) * nos + ((a+b) / 2)
+    f_novo = f(x_novo)
 
-        res_simpson = metodo_simpson(f, a, b, m)
-        print(f"\tResultado da integral com o 1° método de Simpson: {res_simpson}")
-        erro_simpson = abs(analitico - res_trapezio)
-        print(f"\tErro de truncamento para o 1° método de Simpson: {erro_simpson}")
+    soma = np.sum(pesos * f_novo)
+    
+    return ((b-a) / 2) * soma
 
-    else:
-        print("\nMétodo Incorreto!\n")
+
+# Função utilizada para imprimir a saída dos métodos de maneira formatada:
+def imprime_saida(f, funcao_metodo, integral_analitica, a, b, lista_pontos, nome_metodo):
+    analitico = integral_analitica(a, b)
+    print(f"Integral analítica: {analitico}")
+    
+    print(f"\n============ {nome_metodo} ============\n")
+
+    for pontos in lista_pontos:
+        print(f"\nn = {pontos} pontos")
+        res = funcao_metodo(f, a, b, pontos)
+
+        if res is not None:
+            print(f"\tResultado da integral com o {nome_metodo}: {res}")
+            erro_absoluto = abs(analitico - res)
+            print(f"\tErro Absoluto para o {nome_metodo}: {erro_absoluto}")
 
 
 # Inicializando as variáveis:
 
 # 1)
 
+# Número de pontos para os métodos do exercício 1:
+pontos_trapezio = [2, 5, 13]
+pontos_simpson = [3, 5, 13]
+pontos_gaussiana = [1, 2, 3]
+
 # Intervalo de integração:
 a = 0
 b = 2
 
-print(f"Intervalo [a, b] = [{a}, {b}]")
+print(f"\nIntervalo [a, b] = [{a}, {b}]")
 
-# Método do trapézio:
-
-# Número de pontos:
-m1 = 2
-m2 = 5
-m3 = 13
-
-imprime_saida(f1, integral_analitica1, a, b, m1, 'trapezio')
-imprime_saida(f1, integral_analitica1, a, b, m2, 'trapezio')
-imprime_saida(f1, integral_analitica1, a, b, m3, 'trapezio')
-
-# 1° Método de Simpson:
-
-# Número de pontos:
-m1 = 3
-
-imprime_saida(f1, integral_analitica1, a, b, m1, 'simpson')
-imprime_saida(f1, integral_analitica1, a, b, m2, 'simpson')
-imprime_saida(f1, integral_analitica1, a, b, m3, 'simpson')
-
+imprime_saida(f1, metodo_trapezio, integral_analitica1, a, b, pontos_trapezio, "método do trapézio")
+imprime_saida(f1, metodo_simpson, integral_analitica1, a, b, pontos_simpson, "método de Simpson (1/3)")
+imprime_saida(f1, quadratura_gaussiana, integral_analitica1, a, b, pontos_gaussiana, "método da Quadratura Gaussiana")
 
 # 2)
+
+# Número de pontos para os métodos do exercício 2:
+pontos_trapezio_simpson = [2, 5, 99, 599, 10001]
+pontos_gaussiana = [5, 10, 15, 20, 50, 100]
 
 # Intervalo de integração:
 a = 0
 b = 20
 
-print(f"Intervalo [a, b] = [{a}, {b}]")
+print(f"\nIntervalo [a, b] = [{a}, {b}]")
 
-# Método do trapézio:
-
-# Número de pontos:
-m1 = 2
-m2 = 5
-m3 = 99
-m4 = 599
-m5 = 10001
-
-imprime_saida(f2, integral_analitica2, a, b, m1, 'trapezio')
-imprime_saida(f2, integral_analitica2, a, b, m2, 'trapezio')
-imprime_saida(f2, integral_analitica2, a, b, m3, 'trapezio')
-imprime_saida(f2, integral_analitica2, a, b, m4, 'trapezio')
-imprime_saida(f2, integral_analitica2, a, b, m5, 'trapezio')
-
-# 1° Método de Simpson:
-
-imprime_saida(f2, integral_analitica2, a, b, m1, 'simpson')
-imprime_saida(f2, integral_analitica2, a, b, m2, 'simpson')
-imprime_saida(f2, integral_analitica2, a, b, m3, 'simpson')
-imprime_saida(f2, integral_analitica2, a, b, m4, 'simpson')
-imprime_saida(f2, integral_analitica2, a, b, m5, 'simpson')
+imprime_saida(f2, metodo_trapezio, integral_analitica2, a, b, pontos_trapezio_simpson, "método do trapézio")
+imprime_saida(f2, metodo_simpson, integral_analitica2, a, b, pontos_trapezio_simpson, "método de Simpson (1/3)")
+imprime_saida(f2, quadratura_gaussiana, integral_analitica2, a, b, pontos_gaussiana, "método da Quadratura Gaussiana")
