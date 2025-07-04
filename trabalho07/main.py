@@ -53,7 +53,7 @@ def eliminacao_gaussiana(A, B):
     return x
 
 
-# Função utilizada para solucionar o método dos mínimos quadrados (caso discreto) e aproximar uma função f(x):
+# Função utilizada para solucionar o Método dos Mínimos Quadrados (caso discreto) e aproximar uma função f(x):
 def minimos_quadrados_discreto(x, y, k):
     A = np.zeros((k+1, k+1))
     B = np.zeros(k+1)
@@ -73,8 +73,8 @@ def minimos_quadrados_discreto(x, y, k):
     return A, B
 
 
-# Função utilizada para solucionar o método dos mínimos quadrados (caso contínuo) e aproximar uma função f(x):
-def minimos_quadrados_continuo(f, a, b):
+# Função utilizada para solucionar o Método dos Mínimos Quadrados (caso contínuo) e aproximar uma função f(x):
+def minimos_quadrados_continuo(f, a, b, k):
     A = np.zeros((k+1, k+1))
     B = np.zeros(k+1)
 
@@ -116,6 +116,28 @@ def P(a, xp):
     return p 
 
 
+# Função utilizada para plotar o gráfico dos pontos e da função f(x) encontrada (caso discreto): 
+def plotar_grafico(x, y, coeficentes):
+    plt.figure(f'Figura do polinômio encontrado (caso discreto)')
+
+    x_plot = np.linspace(min(x), max(x), 100)
+    y_plot = []
+
+    for x_i in x_plot:
+        y_plot.append(P(coeficentes, x_i))
+
+    plt.scatter(x, y, color="red", label="Pontos fornecidos")
+    plt.plot(x_plot, y_plot, label="Função de grau 2 encontrada", color="blue", linewidth=3.0)
+    
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend()
+    plt.grid(True)
+    
+    plt.savefig(f"grafico_caso_discreto")
+    plt.show()
+
+
 # Definindo os valores utilizados:
 
 # Caso discreto:
@@ -124,10 +146,10 @@ valores_x = np.array([0, 2, 4, 6, 8, 10, 12, 14, 16], dtype=float)
 valores_y = np.array([1, 7, 21, 22, 34, 34.5, 35, 64.5, 65], dtype=float)
 k_discreto = 2 # grau do polinômio
 
-A_discreto, B_discreto = minimos_quadrados_discreto(valores_x, valores_y, k)
+A_discreto, B_discreto = minimos_quadrados_discreto(valores_x, valores_y, k_discreto)
 
 # Imprimindo a saída:
-print("\n========= Mínimos Quadrados (caso discreto) =========\n")
+print("\n========= Método dos Mínimos Quadrados (caso discreto) =========\n")
 print(f"\nValores de x: {valores_x}")
 print(f"\nValores de y: {valores_y}")
 print(f"\nPolinômio de grau: {k_discreto}")
@@ -143,32 +165,27 @@ print(coeficientes_discreto)
 print("\nFunção aproximada:")
 imprimir_polinomio(coeficientes_discreto)
 
+plotar_grafico(valores_x, valores_y, coeficientes_discreto)
+
 # Caso contínuo:
 
-print("\n========= Mínimos Quadrados (caso contínuo) =========\n")
+print("\n========= Método dos Mínimos Quadrados (caso contínuo) =========\n")
 a = 0
-b = np.pi()/2
+b = np.pi/2
 k_continuo = 3 # grau do polinômio
 
-A, B = minimos_quadrados_continuo(f, a, b)
+A_continuo, B_continuo = minimos_quadrados_continuo(f, a, b, k_continuo)
 
 print(f"\nIntervalo [a, b] = {[a, b]}")
-print(f"\nPolinômio de grau: {k}")
+print(f"\nPolinômio de grau: {k_continuo}")
 print("\nMatriz A:")
-print(A)
+print(A_continuo)
 print("\nVetor b:")
-print(B)
+print(B_continuo)
 
-coeficientes = eliminacao_gaussiana(A, B)
+coeficientes_continuo = eliminacao_gaussiana(A_continuo, B_continuo)
 print("\nVetor de coeficientes obtido:")
-print(coeficientes)
+print(coeficientes_continuo)
 
 print("\nFunção aproximada:")
-imprimir_polinomio(coeficientes)
-
-print("\nTeste para alguns pontos:")
-print(f"\tP(0) = {P(coeficientes, 0)} e f(0) = {f(0)}")
-print(f"\tP(0.2) = {P(coeficientes, 0.2)} e f(0.2) = {f(0.2)}")
-print(f"\tP(0.5) = {P(coeficientes, 0.5)} e f(0.5) = {f(0.5)}")
-print(f"\tP(0.8) = {P(coeficientes, 0.8)} e f(0.8) = {f(0.8)}")
-print(f"\tP(1) = {P(coeficientes, 1)} e f(1) = {f(1)}")
+imprimir_polinomio(coeficientes_continuo)
