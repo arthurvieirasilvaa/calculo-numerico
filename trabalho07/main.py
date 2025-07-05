@@ -116,11 +116,11 @@ def P(a, xp):
     return p 
 
 
-# Função utilizada para plotar o gráfico dos pontos e da função f(x) encontrada (caso discreto): 
+# Função utilizada para plotar o gráfico dos pontos e da função f(x) encontrada (caso discreto):
 def plotar_grafico(x, y, coeficentes):
-    plt.figure(f'Figura do polinômio encontrado (caso discreto)')
+    plt.figure(f'Figura da função encontrada (caso discreto)')
 
-    x_plot = np.linspace(min(x), max(x), 100)
+    x_plot = np.linspace(min(x), max(x), 500)
     y_plot = []
 
     for x_i in x_plot:
@@ -131,6 +131,7 @@ def plotar_grafico(x, y, coeficentes):
     
     plt.xlabel("x")
     plt.ylabel("y")
+    plt.ylim(0, 80)
     plt.legend()
     plt.grid(True)
     
@@ -189,3 +190,15 @@ print(coeficientes_continuo)
 
 print("\nFunção aproximada:")
 imprimir_polinomio(coeficientes_continuo)
+
+# Diferença da função sin(x) e do poliômio encontrado
+valores = np.linspace(a, b, 5)
+
+print(f"\n{'x':>8} | {'sin(x)':>8} | {'P(x)':>8} | {'Erro':>8}")
+print("=" * 45)
+
+for val in valores:
+    valor_real = f(val)
+    valor_aproximado = P(coeficientes_continuo, val)
+    erro = abs(valor_real - valor_aproximado)
+    print(f"{val:8.4f} | {valor_real:8.4f} | {valor_aproximado:8.4f} | {erro:8.4f}")
