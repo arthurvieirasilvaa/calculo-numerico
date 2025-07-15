@@ -1,17 +1,22 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def f(t, y):
     return y + np.exp(2*t) + np.sin(t) + np.cos(t)
 
 
+def y_exata(t):
+    return np.exp(2*t) - np.cos(t)
+
+
 def euler_simpes(f, t0, y0, tf, n):
     h = (tf - t0) / n
-    y = np.zeros(n)
-    t = np.zeros(n)
+    y = np.zeros(n+1)
+    t = np.zeros(n+1)
 
     y[0] = y0
     t[0] = t0
-    for i in range(1, n):
+    for i in range(1, n+1):
         y[i] = y[i-1] + h * f(t[i-1], y[i-1])
         t[i] = t[i-1] + h   
     
@@ -20,17 +25,38 @@ def euler_simpes(f, t0, y0, tf, n):
 
 def euler_melhorado(f, t0, y0, tf, n):
     h = (tf - t0) / n
-    y = np.zeros(n)
-    t = np.zeros(n)
+    y = np.zeros(n+1)
+    t = np.zeros(n+1)
 
     y[0] = y0
     t[0] = t0
-    for i in range(1, n):
+    for i in range(1, n+1):
         y_previsao = y[i-1] + h * f(t[i-1], y[i-1])
         y[i] = y[i-1] + (h/2) * (f(t[i-1], y[i-1]) + f(t[i-1]+h, y_previsao))
         t[i] = t[i-1] + h
     
     return y, t
+
+
+def plotar_grafico(y, t, titulo, alternativa):
+    t_plot = np.linspace(0, 2, 200)
+    y_plot = y_exata(t_plot)
+
+    plt.figure(figsize=(10,6))
+    
+    plt.plot(t_plot, y_plot, 'bo--', label='Solução Exata', linewidth=2, markersize=5)
+    plt.plot(t, y, 'ro--', label=titulo, linewidth=2, markersize=5)
+    plt.xlabel('t')
+    plt.ylabel('y(t)')
+    
+    plt.title(f'Comparação: {titulo} x Solução Exata')
+    plt.legend()
+    
+    plt.grid(True)
+    plt.tight_layout()
+
+    plt.savefig(f"grafico_{alternativa}")
+    plt.show()
 
 
 # Valores utilizados nos Métodos de Euler:
@@ -58,5 +84,10 @@ print("\n========= Método de Euler Melhorado =========\n")
 yd, td = euler_melhorado(f, t0, y0, tf, 32)
 print(f"t = {td}\n y = {yd}")
 
-valor_exato = np.exp(2*tf) - np.cos(tf)
+valor_exato = y_exata(tf)
 print(f"\nValor exato de x(4) = {valor_exato}")
+
+plotar_grafico(ya, ta, "Método de Euler Simples com 16 passos", "a")
+plotar_grafico(yb, tb, "Método de Euler Melhorado com 8 passos", "b")
+plotar_grafico(yc, tc, "Método de Euler Simples com 64 passos", "c")
+plotar_grafico(yd, td, "Método de Euler Melhorado com 32 passos", "d")
