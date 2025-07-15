@@ -18,3 +18,18 @@ def euler_simpes(f, t0, x0, tf, n):
     return x, t
 
 
+def euler_melhorado(f, t0, x0, tf, n):
+    h = (tf - t0) / n
+    x = np.zeros(n)
+    t = np.zeros(n)
+
+    x[0] = x0
+    t[0] = t0
+    for i in range(1, n):
+        x_previsao = x[i-1] + h * f(t[i-1], x[i-1])
+        x[i] = x[i-1] + (h/2) * (f(t[i-1], x[i-1]) + f(t[i-1]+h, x_previsao))
+        t[i] = t[i-1] + h
+    
+    return x, t
+
+
