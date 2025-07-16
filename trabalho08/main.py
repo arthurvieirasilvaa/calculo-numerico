@@ -65,27 +65,27 @@ y0 = 0
 tf = 2
 
 # a) Método de Euler Simples com 16 passos (subintervalos):
-print("\n========= Método de Euler Simples =========\n")
+print("\n========= Método de Euler Simples (16 passos) =========\n")
 ya, ta = euler_simpes(f, t0, y0, tf, 16)
 print(f"t = {ta}\n y = {ya}")
 
 # b) Método de Euler Melhorado com 8 passos:
-print("\n========= Método de Euler Melhorado =========\n")
+print("\n========= Método de Euler Melhorado (8 passos) =========\n")
 yb, tb = euler_melhorado(f, t0, y0, tf, 8)
 print(f"t = {tb}\n y = {yb}")
 
 # c) Método de Euler Simples com 64 passos (subintervalos):
-print("\n========= Método de Euler Simples =========\n")
+print("\n========= Método de Euler Simples (64 passos) =========\n")
 yc, tc = euler_simpes(f, t0, y0, tf, 64)
 print(f"t = {tc}\n y = {yc}")
 
 # d) Método de Euler Melhorado com 32 passos:
-print("\n========= Método de Euler Melhorado =========\n")
+print("\n========= Método de Euler Melhorado (32 passos) =========\n")
 yd, td = euler_melhorado(f, t0, y0, tf, 32)
 print(f"t = {td}\n y = {yd}")
 
 valor_exato = y_exata(tf)
-print(f"\nValor exato de x(4) = {valor_exato}")
+print(f"\nValor exato de y(2) = {valor_exato}")
 
 plotar_grafico(ya, ta, "Método de Euler Simples com 16 passos", "a")
 plotar_grafico(yb, tb, "Método de Euler Melhorado com 8 passos", "b")
