@@ -24,11 +24,11 @@ Cada trabalho é estruturado com código-fonte em **Python**, documentação cla
 
 | Nº | Tema                                       | Tópico Principal                              | Link |
 |----|--------------------------------------------|-----------------------------------------------|------|
-| 01 | Conversão e precisão numérica             | Erros de representação e arredondamento        | 🔗 [Ver trabalho](trabalho_01/) |
-| 02 | Zeros de funções                          | Método da Bisseção, Newton-Raphson e Secante   | 🔗 [Ver trabalho](trabalho_02/) |
-| 03 | Sistemas lineares                         | Eliminação de Gauss sem pivoteamento, Fatoração LU com pivoteamento parcial              | 🔗 [Ver trabalho](trabalho_03/) |
-| 04 | Sistemas lineares                         | Método de Jacobi e Gauss-Seidel               | 🔗 [Ver trabalho](trabalho_04/) |
-| 05 | Interpolação polinomial                   | Lagrange, Newton e Forma Canônica             | 🔗 [Ver trabalho](trabalho_05/) |
-| 06 | Integração numérica                       | Regra do Trapézio, Simpson e Quadratura Gaussiana                            | 🔗 [Ver trabalho](trabalho_06/) |
-| 07 | Ajuste de curvas                          | Mínimos quadrados (caso discreto e contínuo)  | 🔗 [Ver trabalho](trabalho_07/) |
-| 08 | Equações diferenciais (EDO)               | Euler simples e melhorado                     | 🔗 [Ver trabalho](trabalho_08/) |
+| 01 | Conversão e precisão numérica             | Erros de representação e arredondamento        | 🔗 [Ver trabalho](trabalho01/) |
+| 02 | Zeros de funções                          | Método da Bisseção, Newton-Raphson e Secante   | 🔗 [Ver trabalho](trabalho02/) |
+| 03 | Sistemas lineares                         | Eliminação de Gauss sem pivoteamento, Fatoração LU com pivoteamento parcial              | 🔗 [Ver trabalho](trabalho03/) |
+| 04 | Sistemas lineares                         | Método de Jacobi e Gauss-Seidel               | 🔗 [Ver trabalho](trabalho04/) |
+| 05 | Interpolação polinomial                   | Lagrange, Newton e Forma Canônica             | 🔗 [Ver trabalho](trabalho05/) |
+| 06 | Integração numérica                       | Regra do Trapézio, Simpson e Quadratura Gaussiana                            | 🔗 [Ver trabalho](trabalho06/) |
+| 07 | Ajuste de curvas                          | Mínimos quadrados (caso discreto e contínuo)  | 🔗 [Ver trabalho](trabalho07/) |
+| 08 | Equações diferenciais (EDO)               | Euler simples e melhorado                     | 🔗 [Ver trabalho](trabalho08/) |
